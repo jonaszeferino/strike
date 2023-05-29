@@ -102,6 +102,7 @@ export default function StrikeManager() {
   ];
 
   const categorias = [
+    "Bullyng",
     "Clubista",
     "Foi Deus que Quis",
     "Foi Lóqui",
