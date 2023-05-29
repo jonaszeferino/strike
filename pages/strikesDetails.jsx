@@ -171,90 +171,82 @@ export default function StrikeManager() {
   };
 
   return (
-    <ChakraProvider>
-      <Center>
-        <Stack spacing={4}>
-          <Heading as="h1" size="xl">
-            Ordenado Por Mau Comportamento
-          </Heading>
-          <Grid templateColumns="repeat(2, 1fr)" gap={4}></Grid>
-        </Stack>
-      </Center>
-      <Center>
-        <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-          {strikeSaveValues.map((item) => (
-            <Box
-              key={item._id}
-              borderWidth="1px"
-              borderRadius="md"
-              p={4}
-              textAlign="center"
-            >
-              <Image
-                src={getImagemPorNome(item._id)}
-                alt={item._id}
-                boxSize="264px"
-                objectFit="cover"
-              />
-              <Text>{item._id}</Text>
-              <Text>{item.totalStrikePoints}</Text>
-            </Box>
-          ))}
-        </Grid>
-      </Center>
-      
-        <FormControl>
-          <FormLabel>Elemento</FormLabel>
-          <Text>Selecione o Meliante Para verificar os detalhes</Text>
-          <Select
-            name="nome"
-            placeholder="Selecione o Meliante"
-            disabled={isNew}
-            onChange={handleNomeChange}
-            value={nome}
-          >
-            {nomes.map((item, index) => (
-              <option key={index} value={item.value}>
-                {item.label}
-              </option>
-            ))}
-          </Select>
-          <Button type="submit" colorScheme="teal" onClick={apiStrikesDetails}>
-            Verificar
-          </Button>
-        </FormControl>
+<ChakraProvider>
+  <Stack spacing={4} p={4}>
+    <Heading as="h1" size="xl" textAlign="center">
+      Ordenado Por Mau Comportamento
+    </Heading>
 
-        <Table>
-          <Tbody>
-            <Tr>
-              <Th>categoria</Th>
-              <Th>Strike Points</Th>
-              <Th>Observação</Th>
-              <Th>Data</Th>
-            </Tr>
-            {strikeSaveValuesDetails.map((item) => (
-              <Tr key={item._id}>
-                <Td>{item.incidents}</Td>
-                <Td>{item.strikePoints}</Td>
-                <Td>{item.observations}</Td>
-                <Td>
-                  {item.updateDate
-                    ? format(new Date(item.updateDate), "dd/MM/yyyy HH:mm:ss")
-                    : ""}
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      
-      <div>
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-      </div>
-    </ChakraProvider>
+    <Center>
+      <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+        {strikeSaveValues.map((item) => (
+          <Box
+            key={item._id}
+            borderWidth="1px"
+            borderRadius="md"
+            p={4}
+            textAlign="center"
+          >
+            <Image
+              src={getImagemPorNome(item._id)}
+              alt={item._id}
+              boxSize="100%"
+              objectFit="cover"
+            />
+            <Text>{item._id}</Text>
+            <Text>{item.totalStrikePoints}</Text>
+          </Box>
+        ))}
+      </Grid>
+    </Center>
+
+    <FormControl>
+      <FormLabel>Elemento</FormLabel>
+      <Text>Selecione o Meliante para verificar os detalhes</Text>
+      <Select
+        name="nome"
+        placeholder="Selecione o Meliante"
+        disabled={isNew}
+        onChange={handleNomeChange}
+        value={nome}
+      >
+        {nomes.map((item, index) => (
+          <option key={index} value={item.value}>
+            {item.label}
+          </option>
+        ))}
+      </Select>
+      <Button type="submit" colorScheme="teal" onClick={apiStrikesDetails} mt={2}>
+        Verificar
+      </Button>
+    </FormControl>
+
+    <Table mt={4}>
+      <Tbody>
+        <Tr>
+          <Th>Categoria</Th>
+          <Th>Strike Points</Th>
+          <Th>Observação</Th>
+          <Th>Data</Th>
+        </Tr>
+        {strikeSaveValuesDetails.map((item) => (
+          <Tr key={item._id}>
+            <Td>{item.incidents}</Td>
+            <Td>{item.strikePoints}</Td>
+            <Td>{item.observations}</Td>
+            <Td>
+              {item.updateDate
+                ? format(new Date(item.updateDate), "dd/MM/yyyy HH:mm:ss")
+                : ""}
+            </Td>
+          </Tr>
+        ))}
+      </Tbody>
+    </Table>
+  </Stack>
+
+  <Box h="100vh"></Box> {/* Espaço vazio para rolagem */}
+</ChakraProvider>
+
   );
 }
