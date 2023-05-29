@@ -17,7 +17,7 @@ import {
   Tbody,
   Tr,
   Td,
-  Th,
+  Th,SimpleGrid,Thead
 } from "@chakra-ui/react";
 import { format, differenceInDays } from "date-fns";
 
@@ -172,33 +172,31 @@ export default function StrikeManager() {
 
   return (
 <ChakraProvider>
-  <Stack spacing={4} p={4}>
+  <Stack spacing={4} p={4} maxW="100%">
     <Heading as="h1" size="xl" textAlign="center">
       Ordenado Por Mau Comportamento
     </Heading>
 
-    <Center>
-      <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-        {strikeSaveValues.map((item) => (
-          <Box
-            key={item._id}
-            borderWidth="1px"
-            borderRadius="md"
-            p={4}
-            textAlign="center"
-          >
-            <Image
-              src={getImagemPorNome(item._id)}
-              alt={item._id}
-              boxSize="100%"
-              objectFit="cover"
-            />
-            <Text>{item._id}</Text>
-            <Text>{item.totalStrikePoints}</Text>
-          </Box>
-        ))}
-      </Grid>
-    </Center>
+    <SimpleGrid columns={[1, 2]} gap={4}>
+      {strikeSaveValues.map((item) => (
+        <Box
+          key={item._id}
+          borderWidth="1px"
+          borderRadius="md"
+          p={4}
+          textAlign="center"
+        >
+          <Image
+            src={getImagemPorNome(item._id)}
+            alt={item._id}
+            boxSize="100%"
+            objectFit="cover"
+          />
+          <Text>{item._id}</Text>
+          <Text>{item.totalStrikePoints}</Text>
+        </Box>
+      ))}
+    </SimpleGrid>
 
     <FormControl>
       <FormLabel>Elemento</FormLabel>
@@ -221,14 +219,16 @@ export default function StrikeManager() {
       </Button>
     </FormControl>
 
-    <Table mt={4}>
-      <Tbody>
+    <Table mt={4} variant="simple">
+      <Thead>
         <Tr>
           <Th>Categoria</Th>
           <Th>Strike Points</Th>
           <Th>Observação</Th>
           <Th>Data</Th>
         </Tr>
+      </Thead>
+      <Tbody>
         {strikeSaveValuesDetails.map((item) => (
           <Tr key={item._id}>
             <Td>{item.incidents}</Td>
@@ -245,8 +245,9 @@ export default function StrikeManager() {
     </Table>
   </Stack>
 
-  <Box h="100vh"></Box> {/* Espaço vazio para rolagem */}
+  <Box h="50vh" w="100%" /> {/* Espaço vazio para rolagem */}
 </ChakraProvider>
+
 
   );
 }
