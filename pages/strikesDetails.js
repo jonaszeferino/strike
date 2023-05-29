@@ -13,15 +13,13 @@ import {
   GridItem,
   Box,
   Heading,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
-  Input,
-  InputGroup,
-  InputLeftAddon,
+  Table,
+  Tbody,
+  Tr,
+  Td,
+  Th,
 } from "@chakra-ui/react";
+import { format, differenceInDays } from "date-fns";
 
 export default function StrikeManager() {
   const [isClient, setIsClient] = useState(false);
@@ -36,7 +34,8 @@ export default function StrikeManager() {
 
   console.log(observationsStrike);
   console.log(strikeSaveValues);
-
+  console.log(strikeSaveValuesDetails);
+  console.log(nome);
   useEffect(() => {
     setIsClient(true);
     apiStrikes();
@@ -66,19 +65,18 @@ export default function StrikeManager() {
   const apiStrikesDetails = async () => {
     console.log("apiStrikes called");
     try {
-      const response = await fetch("/api/v1/getStrikeValuesDetails", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: nome
-        }),
-
-
-      });
+      const response = await fetch(
+        `/api/v1/getStrikeValuesDetails?name=${nome}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const data = await response.json();
-      setStrikeSaveValues(data);
+      setStrikeSaveValuesDetails(data);
+      console.log(data);
 
       return data;
     } catch (error) {
@@ -139,8 +137,6 @@ export default function StrikeManager() {
     "Vive De Grêmio",
   ];
 
-
-
   const handleSubmit = (event) => {
     event.preventDefault();
     setIsNew(false);
@@ -158,7 +154,7 @@ export default function StrikeManager() {
     setStrikeValue(value);
     setIsNew(false);
   };
-  
+
   const Clean = () => {
     setIsNew(false);
     setIsSent(false);
@@ -168,6 +164,10 @@ export default function StrikeManager() {
     setStrike1Clicked(false);
     setStrike2Clicked(false);
     setStrike3Clicked(false);
+  };
+
+  const handleNomeChange = (event) => {
+    setNome(event.target.value);
   };
 
   return (
@@ -181,27 +181,80 @@ export default function StrikeManager() {
         </Stack>
       </Center>
       <Center>
-      <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-  {strikeSaveValues.map((item) => (
-    <Box
-      key={item._id}
-      borderWidth="1px"
-      borderRadius="md"
-      p={4}
-      textAlign="center"
-    >
-      <Image
-        src={getImagemPorNome(item._id)}
-        alt={item._id}
-        boxSize="264px"
-        objectFit="cover"
-      />
-      <Text>{item._id}</Text>
-      <Text>{item.totalStrikePoints}</Text>
-    </Box>
-  ))}
-</Grid>
+        <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+          {strikeSaveValues.map((item) => (
+            <Box
+              key={item._id}
+              borderWidth="1px"
+              borderRadius="md"
+              p={4}
+              textAlign="center"
+            >
+              <Image
+                src={getImagemPorNome(item._id)}
+                alt={item._id}
+                boxSize="264px"
+                objectFit="cover"
+              />
+              <Text>{item._id}</Text>
+              <Text>{item.totalStrikePoints}</Text>
+            </Box>
+          ))}
+        </Grid>
       </Center>
+      <div style={{ width: "600px", marginLeft: "auto", marginRight: "auto" }}>
+        <FormControl>
+          <FormLabel>Elemento</FormLabel>
+          <Text>Selecione o Meliante Para verificar os detalhes</Text>
+          <Select
+            name="nome"
+            placeholder="Selecione o Meliante"
+            disabled={isNew}
+            onChange={handleNomeChange}
+            value={nome}
+          >
+            {nomes.map((item, index) => (
+              <option key={index} value={item.value}>
+                {item.label}
+              </option>
+            ))}
+          </Select>
+          <Button type="submit" colorScheme="teal" onClick={apiStrikesDetails}>
+            Verificar
+          </Button>
+        </FormControl>
+
+        <Table>
+          <Tbody>
+            <Tr>
+              <Th>categoria</Th>
+              <Th>Strike Points</Th>
+              <Th>Observação</Th>
+              <Th>Data</Th>
+            </Tr>
+            {strikeSaveValuesDetails.map((item) => (
+              <Tr key={item._id}>
+                <Td>{item.incidents}</Td>
+                <Td>{item.strikePoints}</Td>
+                <Td>{item.observations}</Td>
+                <Td>
+                  {item.updateDate
+                    ? format(new Date(item.updateDate), "dd/MM/yyyy HH:mm:ss")
+                    : ""}
+                </Td>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      </div>
+      <div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+      </div>
     </ChakraProvider>
   );
 }

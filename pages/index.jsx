@@ -177,9 +177,7 @@ export default function StrikeManager() {
     setNome("Glacial");
     setOcorrencia("");
     setStrikeValue(0);
-    setStrike1Clicked(false);
-    setStrike2Clicked(false);
-    setStrike3Clicked(false);
+    
   };
 
   return (

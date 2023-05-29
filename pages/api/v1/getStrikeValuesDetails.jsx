@@ -2,8 +2,8 @@ import client from "../../../mongoConnection";
 
 export default async function handler(req, res) {
   const collection = client.db("strikeManager").collection("incidents");
-  const { name } = req.body;
-  console.log(req.body)
+  const { name } = req.query;
+  console.log(req.query)
 
   try {
     
