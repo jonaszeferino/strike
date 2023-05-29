@@ -181,20 +181,26 @@ export default function StrikeManager() {
         </Stack>
       </Center>
       <Center>
-        <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-          {strikeSaveValues.map((item) => (
-            <Box
-              key={item._id}
-              borderWidth="1px"
-              borderRadius="md"
-              p={4}
-              textAlign="center"
-            >
-              <Text>{item._id}</Text>
-              <Text>{item.totalStrikePoints}</Text>
-            </Box>
-          ))}
-        </Grid>
+      <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+  {strikeSaveValues.map((item) => (
+    <Box
+      key={item._id}
+      borderWidth="1px"
+      borderRadius="md"
+      p={4}
+      textAlign="center"
+    >
+      <Image
+        src={getImagemPorNome(item._id)}
+        alt={item._id}
+        boxSize="264px"
+        objectFit="cover"
+      />
+      <Text>{item._id}</Text>
+      <Text>{item.totalStrikePoints}</Text>
+    </Box>
+  ))}
+</Grid>
       </Center>
     </ChakraProvider>
   );
