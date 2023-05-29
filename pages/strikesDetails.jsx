@@ -31,11 +31,7 @@ export default function StrikeManager() {
   const [observationsStrike, setObservationsStrike] = useState("");
   const [strikeSaveValues, setStrikeSaveValues] = useState([]);
   const [strikeSaveValuesDetails, setStrikeSaveValuesDetails] = useState([]);
-
-  console.log(observationsStrike);
-  console.log(strikeSaveValues);
-  console.log(strikeSaveValuesDetails);
-  console.log(nome);
+  
   useEffect(() => {
     setIsClient(true);
     apiStrikes();
@@ -155,17 +151,6 @@ export default function StrikeManager() {
     setIsNew(false);
   };
 
-  const Clean = () => {
-    setIsNew(false);
-    setIsSent(false);
-    setNome("Glacial");
-    setOcorrencia("");
-    setStrikeValue(0);
-    setStrike1Clicked(false);
-    setStrike2Clicked(false);
-    setStrike3Clicked(false);
-  };
-
   const handleNomeChange = (event) => {
     setNome(event.target.value);
   };
@@ -173,7 +158,7 @@ export default function StrikeManager() {
   return (
 <ChakraProvider>
   <Center>
-  <Stack spacing={4} width="600px">
+  <Stack spacing={4} width="700px">
     <Heading as="h1" size="xl" textAlign="center">
       Ordenado Por Mau Comportamento
     </Heading>
