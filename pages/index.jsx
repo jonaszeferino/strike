@@ -102,6 +102,7 @@ export default function StrikeManager() {
   ];
 
   const categorias = [
+    "Arrogância",
     "Bullying",
     "Clubista",
     "Foi Deus que Quis",
