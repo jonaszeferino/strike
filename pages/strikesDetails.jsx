@@ -202,7 +202,7 @@ export default function StrikeManager() {
           ))}
         </Grid>
       </Center>
-      <div style={{ width: "600px", marginLeft: "auto", marginRight: "auto" }}>
+      
         <FormControl>
           <FormLabel>Elemento</FormLabel>
           <Text>Selecione o Meliante Para verificar os detalhes</Text>
@@ -246,7 +246,7 @@ export default function StrikeManager() {
             ))}
           </Tbody>
         </Table>
-      </div>
+      
       <div>
         <br />
         <br />
