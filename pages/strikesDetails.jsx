@@ -172,7 +172,8 @@ export default function StrikeManager() {
 
   return (
 <ChakraProvider>
-  <Stack spacing={4} p={4} maxW="100%">
+  <Center>
+  <Stack spacing={4} width="600px">
     <Heading as="h1" size="xl" textAlign="center">
       Ordenado Por Mau Comportamento
     </Heading>
@@ -244,8 +245,10 @@ export default function StrikeManager() {
       </Tbody>
     </Table>
   </Stack>
+  </Center>
 
   <Box h="50vh" w="100%" /> {/* Espaço vazio para rolagem */}
+  
 </ChakraProvider>
 
 
