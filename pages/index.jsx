@@ -186,26 +186,7 @@ export default function StrikeManager() {
 
 
   const handleScreenshot = () => {
-    navigator.mediaDevices
-      .getDisplayMedia({ video: { mediaSource: "screen" } })
-      .then((stream) => {
-        const videoTrack = stream.getVideoTracks()[0];
-        const imageCapture = new ImageCapture(videoTrack);
-
-        imageCapture.takeScreenshot().then((blob) => {
-          const imageURL = URL.createObjectURL(blob);
-          const link = document.createElement("a");
-          link.href = imageURL;
-          link.download = "screenshot.png";
-          link.click();
-        });
-
-        videoTrack.stop();
-      })
-      .catch((error) => {
-        console.error("Erro ao capturar a tela:", error);
-      });
-  };
+    alert("Para tirar uma captura de tela, use a função nativa do seu dispositivo. Não seja Preguiçoso, Silvio Santos era Camelô e agora é Bilionário");};
 
   return (
     <ChakraProvider>
@@ -304,7 +285,7 @@ export default function StrikeManager() {
       <Center>
       <div>
       {/* Conteúdo da sua página */}
-      <Button onClick={handleScreenshot}>Screenshot</Button>
+      <Button onClick={handleScreenshot}>Capturar Screenshot</Button>
     </div>
     </Center>
       <br />
