@@ -143,6 +143,8 @@ export default function StrikeManager() {
     }
   };
 
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setIsNew(false);
@@ -180,6 +182,29 @@ export default function StrikeManager() {
     setOcorrencia("");
     setStrikeValue(0);
     
+  };
+
+
+  const handleScreenshot = () => {
+    navigator.mediaDevices
+      .getDisplayMedia({ video: { mediaSource: "screen" } })
+      .then((stream) => {
+        const videoTrack = stream.getVideoTracks()[0];
+        const imageCapture = new ImageCapture(videoTrack);
+
+        imageCapture.takeScreenshot().then((blob) => {
+          const imageURL = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = imageURL;
+          link.download = "screenshot.png";
+          link.click();
+        });
+
+        videoTrack.stop();
+      })
+      .catch((error) => {
+        console.error("Erro ao capturar a tela:", error);
+      });
   };
 
   return (
@@ -276,6 +301,12 @@ export default function StrikeManager() {
           </Button>
         </Stack>
       </Center>
+      <Center>
+      <div>
+      {/* Conteúdo da sua página */}
+      <Button onClick={handleScreenshot}>Screenshot</Button>
+    </div>
+    </Center>
       <br />
       <Center>
         {isSent && isClient && <Text color="green.500">Meliante Fichado!</Text>}
@@ -315,6 +346,7 @@ export default function StrikeManager() {
           ))}
         </Grid>
       </Center>
+
     </ChakraProvider>
   );
 }
