@@ -15,7 +15,7 @@ export default async function handler(req, res) {
       name: name ? name : null,
       incidents: incidents ? incidents : null,
       goals: goalsConvert ? goalsConvert : null,
-      observationsGoals: observationsGoals ? observationsGoals : "Um Ponto por Caridade",
+      observationsGoals: observationsGoals ? observationsGoals : "Pontução por Caridade - Muita Mão Digitar algo",
       updateDate: date
  });
    
