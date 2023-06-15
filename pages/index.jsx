@@ -20,7 +20,7 @@ import {
   NumberDecrementStepper,
   Input,
   InputGroup,
-  InputLeftAddon,
+  InputLeftAddon
 } from "@chakra-ui/react";
 
 export default function StrikeManager() {
@@ -28,10 +28,17 @@ export default function StrikeManager() {
   const [isSent, setIsSent] = useState(false);
   const [nome, setNome] = useState("Glacial");
   const [ocorrencia, setOcorrencia] = useState("");
+  const [ocorrenciaBoa, setOcorrenciaBoa] = useState("");
   const [strikeValue, setStrikeValue] = useState(0);
+  const [goalsValue, setGoalsValue] = useState(0);
   const [isNew, setIsNew] = useState(false);
   const [observationsStrike, setObservationsStrike] = useState("");
+  const [observationsGoals, setObservationsGoals] = useState("");
   const [strikeSaveValues, setStrikeSaveValues] = useState([]);
+  const [goalsSaveValues,setGoalsSaveValues] = useState([]);
+  
+  const [bad, setBad] = useState(true)
+  const [good, setGood] = useState(false)
 
   console.log(observationsStrike);
   console.log(strikeSaveValues);
@@ -39,6 +46,7 @@ export default function StrikeManager() {
   useEffect(() => {
     setIsClient(true);
     apiStrikes();
+    apiGoals();
 
     if (isClient) {
     }
@@ -55,6 +63,24 @@ export default function StrikeManager() {
       });
       const data = await response.json();
       setStrikeSaveValues(data);
+
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const apiGoals = async () => {
+    console.log("apiStrikes called");
+    try {
+      const response = await fetch("/api/v1/getGoalsValues", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      setGoalsSaveValues(data);
 
       return data;
     } catch (error) {
@@ -117,6 +143,21 @@ export default function StrikeManager() {
     "Vive De Grêmio",
   ];
 
+  const categoriasGoals = [
+    "Exemplo de cidadão",
+    "Amante dos animais",
+    "Anti Clubista",
+    "Falou mal do Boston",
+    "Desconstruído",
+    "Inocente",
+    "Humilde",
+    "Amorosidade",
+    "Altruísta",
+    "Contribuiu para o bem Estar do Grupo",
+    "Desculpas Honestas"
+    
+  ];
+
   const apiCall = async () => {
     setIsNew(true);
     try {
@@ -130,6 +171,32 @@ export default function StrikeManager() {
           incidents: ocorrencia,
           strikePoints: strikeValue,
           observations: observationsStrike,
+        }),
+      });
+      const data = await response.json();
+
+      setIsSent(true);
+      setOcorrencia("");
+      apiStrikes();
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const apiCallGood = async () => {
+    setIsNew(true);
+    try {
+      const response = await fetch("/api/v1/putGoalsManager", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: nome,
+          incidents: ocorrenciaBoa,
+          goals: goalsValue,
+          observationsGoals: observationsGoals,
         }),
       });
       const data = await response.json();
@@ -158,6 +225,10 @@ export default function StrikeManager() {
     setOcorrencia(event.target.value);
   };
 
+  const handleOcorrenciaBoaChange = (event) => {
+    setOcorrenciaBoa(event.target.value);
+  };
+
   const getImagemPorNome = (nome) => {
     const pessoa = nomes.find((item) => item.value === nome);
     if (pessoa) {
@@ -171,6 +242,11 @@ export default function StrikeManager() {
     setIsNew(false);
   };
 
+  const handleGoalsValueChange = (value) => {
+    setGoalsValue(value);
+    setIsNew(false);
+  };
+
   const handleObservationsStrikeChange = (event) => {
     setObservationsStrike(event.target.value);
   };
@@ -181,6 +257,9 @@ export default function StrikeManager() {
     setNome("Glacial");
     setOcorrencia("");
     setStrikeValue(0);
+    setGoalsValue(0);
+    setObservationsGoals("");
+    setOcorrenciaBoa("");
     
   };
 
@@ -188,16 +267,40 @@ export default function StrikeManager() {
   const handleScreenshot = () => {
     alert("Para tirar uma captura de tela, use a função nativa do seu dispositivo. Não seja Preguiçoso, Silvio Santos era Camelô e agora é Bilionário");};
 
+
+  
+    const handleClickGood = () => {
+      setGood(!good);
+      setBad(false);
+    };
+
+    const handleClickBad = () => {
+      setBad(!bad);
+      setGood(false);
+    };
+  
   return (
-    <ChakraProvider>
+ 
+ <ChakraProvider>
+  <Center>
+        <Button onClick={handleClickGood}>Bem feitorias</Button>
+        <Button onClick={handleClickBad}>Marginalidade</Button>
+        </Center>
+   {good ? (
+  <>
+  {/* //BOM */}
       <Center>
+      
         <Stack spacing={4} width="600px">
+        <Heading as="h1" size="xl">
+  Ball Manager - Cidadãos de Bem
+</Heading>
           <form onSubmit={handleSubmit} method="post">
             <FormControl>
-              <FormLabel>Elemento</FormLabel>
+              <FormLabel>Bem feitor</FormLabel>
               <Select
                 name="nome"
-                placeholder="Selecione o Meliante"
+                placeholder="Selecione o ser de Luz"
                 disabled={isNew}
                 onChange={handleNomeChange}
                 value={nome}
@@ -210,17 +313,17 @@ export default function StrikeManager() {
               </Select>
             </FormControl>
             <FormControl>
-              <FormLabel>Ocorrência</FormLabel>
+              <FormLabel>Capital social</FormLabel>
               <Select
                 name="ocorrencia"
                 placeholder="Descreva a Ocorrência"
                 disabled={isNew}
-                onChange={handleOcorrenciaChange}
-                value={ocorrencia}
+                onChange={handleOcorrenciaBoaChange}
+                value={ocorrenciaBoa}
               >
-                {categorias.map((categoria, index) => (
-                  <option key={index} value={categoria}>
-                    {categoria}
+                {categoriasGoals.map((categoriaBoa, index) => (
+                  <option key={index} value={categoriaBoa}>
+                    {categoriaBoa}
                   </option>
                 ))}
               </Select>
@@ -240,19 +343,19 @@ export default function StrikeManager() {
                 />
               )}
               <div>
-                <Text>Meliante: {nome}</Text>
-                <Text>BO: {ocorrencia}</Text>
-                <Text>Valor do Strike: {strikeValue}</Text>
+                <Text>Cidadão de Bem: {nome}</Text>
+                <Text>Bela Atitude: {ocorrencia}</Text>
+                <Text>Valor do Ball: {goalsValue}</Text>
               </div>
             </Grid>
           </Center>
           <NumberInput
-            value={strikeValue}
+            value={goalsValue}
             min={0}
-            onChange={handleStrikeValueChange}
+            onChange={handleGoalsValueChange}
           >
             <FormControl>
-              <FormLabel>Valor do Strike</FormLabel>
+              <FormLabel>Valor do Ball</FormLabel>
               <NumberInputField />
               <NumberInputStepper>
                 <NumberIncrementStepper />
@@ -267,8 +370,8 @@ export default function StrikeManager() {
               size="md"
               id="test1"
               maxLength={150}
-              value={observationsStrike}
-              onChange={(event) => setObservationsStrike(event.target.value)}
+              value={observationsGoals}
+              onChange={(event) => setObservationsGoals(event.target.value)}
             ></Input>
           </InputGroup>
 
@@ -276,7 +379,7 @@ export default function StrikeManager() {
             type="submit"
             colorScheme="teal"
             disabled={isNew}
-            onClick={apiCall}
+            onClick={apiCallGood}
           >
             Enviar
           </Button>
@@ -290,7 +393,7 @@ export default function StrikeManager() {
     </Center>
       <br />
       <Center>
-        {isSent && isClient && <Text color="green.500">Meliante Fichado!</Text>}
+        {isSent && isClient && <Text color="green.500">Cidadão Agraciado</Text>}
         {isSent && isClient && (
           <Button
             type="submit"
@@ -298,7 +401,7 @@ export default function StrikeManager() {
             disabled={isNew}
             onClick={Clean}
           >
-            Novo BO
+            Novo Goal
           </Button>
         )}
       </Center>
@@ -306,14 +409,14 @@ export default function StrikeManager() {
       <Center>
         <Stack spacing={4}>
           <Heading as="h1" size="xl">
-            Ordenado Por Mau Comportamento
+            Ordenado Por Bom Cidadão 
           </Heading>
           <Grid templateColumns="repeat(2, 1fr)" gap={4}></Grid>
         </Stack>
       </Center>
       <Center>
         <Grid templateColumns="repeat(2, 1fr)" gap={4}>
-          {strikeSaveValues.map((item) => (
+          {goalsSaveValues.map((item) => (
             <Box
               key={item._id}
               borderWidth="1px"
@@ -322,12 +425,167 @@ export default function StrikeManager() {
               textAlign="center"
             >
               <Text>{item._id}</Text>
-              <Text>{item.totalStrikePoints}</Text>
+              <Text>{item.totalGoals}</Text>
             </Box>
           ))}
         </Grid>
       </Center>
 
+      </>
+      ) : null}
+
+{bad ? (
+<>
+  <Center>
+
+    <Stack spacing={4} width="600px">
+    <Heading as="h1" size="xl">
+  Strikes Manager - Maloqueiragem
+</Heading>
+      <form onSubmit={handleSubmit} method="post">
+        <FormControl>
+          
+
+          <FormLabel>Elemento</FormLabel>
+          <Select
+            name="nome"
+            placeholder="Selecione o Meliante"
+            disabled={isNew}
+            onChange={handleNomeChange}
+            value={nome}
+          >
+            {nomes.map((item, index) => (
+              <option key={index} value={item.value}>
+                {item.label}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl>
+          <FormLabel>Ocorrência</FormLabel>
+          <Select
+            name="ocorrencia"
+            placeholder="Descreva a Ocorrência"
+            disabled={isNew}
+            onChange={handleOcorrenciaChange}
+            value={ocorrencia}
+          >
+            {categorias.map((categoria, index) => (
+              <option key={index} value={categoria}>
+                {categoria}
+              </option>
+            ))}
+          </Select>
+        </FormControl>
+
+        <br />
+        <Center>{/* Strike Buttons */}</Center>
+      </form>
+      <Center>
+        <Grid templateColumns="auto 1fr" gap={4} alignItems="center">
+          {nome && isClient && (
+            <Image
+              src={getImagemPorNome(nome)}
+              alt={nome}
+              boxSize="200px"
+              objectFit="cover"
+            />
+          )}
+          <div>
+            <Text>Meliante: {nome}</Text>
+            <Text>BO: {ocorrencia}</Text>
+            <Text>Valor do Strike: {strikeValue}</Text>
+          </div>
+        </Grid>
+      </Center>
+      <NumberInput
+        value={strikeValue}
+        min={0}
+        onChange={handleStrikeValueChange}
+      >
+        <FormControl>
+          <FormLabel>Valor do Strike</FormLabel>
+          <NumberInputField />
+          <NumberInputStepper>
+            <NumberIncrementStepper />
+            <NumberDecrementStepper />
+          </NumberInputStepper>
+        </FormControl>
+      </NumberInput>
+
+      <InputGroup size="md" mb={5}>
+        <InputLeftAddon size="md">Observação</InputLeftAddon>
+        <Input
+          size="md"
+          id="test1"
+          maxLength={150}
+          value={observationsStrike}
+          onChange={(event) => setObservationsStrike(event.target.value)}
+        ></Input>
+      </InputGroup>
+
+      <Button
+        type="submit"
+        colorScheme="teal"
+        disabled={isNew}
+        onClick={apiCall}
+      >
+        Enviar
+      </Button>
+    </Stack>
+  </Center>
+  <Center>
+  <div>
+  {/* Conteúdo da sua página */}
+  <Button onClick={handleScreenshot}>Capturar Screenshot</Button>
+</div>
+</Center>
+  <br />
+  <Center>
+    {isSent && isClient && <Text color="green.500">Meliante Fichado!</Text>}
+    {isSent && isClient && (
+      <Button
+        type="submit"
+        colorScheme="teal"
+        disabled={isNew}
+        onClick={Clean}
+      >
+        Novo BO
+      </Button>
+    )}
+  </Center>
+  <br />
+  <Center>
+    <Stack spacing={4}>
+      <Heading as="h1" size="xl">
+        Ordenado Por Mau Comportamento
+      </Heading>
+      <Grid templateColumns="repeat(2, 1fr)" gap={4}></Grid>
+    </Stack>
+  </Center>
+  <Center>
+    <Grid templateColumns="repeat(2, 1fr)" gap={4}>
+      {strikeSaveValues.map((item) => (
+        <Box
+          key={item._id}
+          borderWidth="1px"
+          borderRadius="md"
+          p={4}
+          textAlign="center"
+        >
+          <Text>{item._id}</Text>
+          <Text>{item.totalStrikePoints}</Text>
+        </Box>
+      ))}
+    </Grid>
+  </Center>
+
+  </>
+  ) : null}
     </ChakraProvider>
+
+    
+
+    
   );
 }

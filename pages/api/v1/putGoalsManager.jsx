@@ -1,0 +1,28 @@
+import client from "../../../mongoConnection";
+
+export default async function handler(req, res) {
+  const { name, incidents, goals, observationsGoals } = req.body;
+
+  let goalsConvert = parseInt(goals)
+  let date = new Date();
+  console.log(goalsConvert)
+
+  console.log(req.body)
+  const collection = client.db("strikeManager").collection("goals");
+
+  try {
+    const result = await collection.insertOne({
+      name: name ? name : null,
+      incidents: incidents ? incidents : null,
+      goals: goalsConvert ? goalsConvert : null,
+      observationsGoals: observationsGoals ? observationsGoals : "Um Ponto por Caridade",
+      updateDate: date
+ });
+   
+    console.log(result);
+
+    res.status(200).json({ message: "Goal Inserido!" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+}

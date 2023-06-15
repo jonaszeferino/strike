@@ -31,21 +31,10 @@ export default function StrikeManager() {
   const [observationsStrike, setObservationsStrike] = useState("");
   const [strikeSaveValues, setStrikeSaveValues] = useState([]);
   const [strikeSaveValuesDetails, setStrikeSaveValuesDetails] = useState([]);
-
-  const [goalsSaveValuesDetails, setGoalsSaveValuesDetails] = useState([])
-  const [goalsSaveValues, setGoalsSaveValues] = useState([])
-
-  
-
-  const [bad, setBad] = useState(true)
-  const [good, setGood] = useState(false)
-  
   
   useEffect(() => {
     setIsClient(true);
     apiStrikes();
-    apiGoals();
-    
 
     if (isClient) {
     }
@@ -83,46 +72,6 @@ export default function StrikeManager() {
       );
       const data = await response.json();
       setStrikeSaveValuesDetails(data);
-      console.log(data);
-
-      return data;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const apiGoals = async () => {
-    console.log("apiStrikes called");
-    try {
-      const response = await fetch("/api/v1/getGoalsValues", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await response.json();
-      setGoalsSaveValues(data);
-
-      return data;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const apiGoalsDetails = async () => {
-    console.log("apiStrikes called");
-    try {
-      const response = await fetch(
-        `/api/v1/getGoalsValuesDetails?name=${nome}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const data = await response.json();
-      setGoalsSaveValuesDetails(data);
       console.log(data);
 
       return data;
@@ -207,106 +156,8 @@ export default function StrikeManager() {
     setNome(event.target.value);
   };
 
-  const handleClickGood = () => {
-    setGood(!good);
-    setBad(false);
-  };
-
-  const handleClickBad = () => {
-    setBad(!bad);
-    setGood(false);
-  };
-
   return (
 <ChakraProvider>
-
-<Center>
-        <Button onClick={handleClickGood}>Bem feitorias</Button>
-        <Button onClick={handleClickBad}>Marginalidade</Button>
- 
-        </Center>
-        {good ? (
-<>
-  <Center>
-  <Stack spacing={4} width="700px">
-    <Heading as="h1" size="xl" textAlign="center">
-      Ordenado Por Bom Comportamento
-    </Heading>
-
-    <SimpleGrid columns={[1, 2]} gap={4}>
-      {goalsSaveValues.map((item) => (
-        <Box
-          key={item._id}
-          borderWidth="1px"
-          borderRadius="md"
-          p={4}
-          textAlign="center"
-        >
-          <Image
-            src={getImagemPorNome(item._id)}
-            alt={item._id}
-            boxSize="100%"
-            objectFit="cover"
-          />
-          <Text>{item._id}</Text>
-          <Text>{item.totalGoals}</Text>
-        </Box>
-      ))}
-    </SimpleGrid>
-
-    <FormControl>
-      <FormLabel>Elemento</FormLabel>
-      <Text>Selecione o Bom Cidadão Para Verificar Seus Beneficios Pra Sociedade</Text>
-      <Select
-        name="nome"
-        placeholder="Selecione o Meliante"
-        disabled={isNew}
-        onChange={handleNomeChange}
-        value={nome}
-      >
-        {nomes.map((item, index) => (
-          <option key={index} value={item.value}>
-            {item.label}
-          </option>
-        ))}
-      </Select>
-      <Button type="submit" colorScheme="teal" onClick={apiGoalsDetails} mt={2}>
-        Verificar
-      </Button>
-    </FormControl>
-
-    <Table mt={4} variant="simple">
-      <Thead>
-        <Tr>
-          <Th>Categoria</Th>
-          <Th>Balls</Th>
-          <Th>Observação</Th>
-          <Th>Data</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        {goalsSaveValuesDetails.map((item) => (
-          <Tr key={item._id}>
-            <Td>{item.incidents}</Td>
-            <Td>{item.goals}</Td>
-            <Td>{item.observationsGoals}</Td>
-            <Td>
-              {item.updateDate
-                ? format(new Date(item.updateDate), "dd/MM/yyyy HH:mm:ss")
-                : ""}
-            </Td>
-          </Tr>
-        ))}
-      </Tbody>
-    </Table>
-  </Stack>
-  </Center>
-  </>
-
-) : null}
-
-{bad ? (
-<>
   <Center>
   <Stack spacing={4} width="700px">
     <Heading as="h1" size="xl" textAlign="center">
@@ -381,13 +232,6 @@ export default function StrikeManager() {
     </Table>
   </Stack>
   </Center>
-  </>
-  ) : null}
-
-
-
-
-
 
   <Box h="50vh" w="100%" /> {/* Espaço vazio para rolagem */}
   

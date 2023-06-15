@@ -1,21 +1,21 @@
 import client from "../../../mongoConnection";
 
-//req.query -  usa uma querystring
-//req.body - usa no corpo
-
 export default async function handler(req, res) {
-  const collection = client.db("strikeManager").collection("incidents");
-  const { name } = req.query;
-  console.log(req.query)
+  const collection = client.db("strikeManager").collection("goals");
 
   try {
-    
+    const distinctNames = await collection.distinct("name");
     const pipeline = [
-      { $match: { name } }, 
-     
+      { $match: { name: { $in: distinctNames } } },
+      {
+        $group: {
+          _id: "$name",
+          totalGoals: { $sum: "$goals" }
+        }
+      },
       {
         $sort: {
-          totalStrikePoints: -1,
+          totalGoals: -1,
           _id: 1
         }
       }
@@ -27,4 +27,3 @@ export default async function handler(req, res) {
     res.status(500).json({ error: 'Ocorreu um erro ao buscar os dados' });
   }
 }
-// aqui estão buscando pelo nome dentro da prop "name"

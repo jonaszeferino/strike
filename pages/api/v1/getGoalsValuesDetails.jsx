@@ -1,12 +1,10 @@
 import client from "../../../mongoConnection";
 
-//req.query -  usa uma querystring
-//req.body - usa no corpo
-
 export default async function handler(req, res) {
-  const collection = client.db("strikeManager").collection("incidents");
+  const collection = client.db("strikeManager").collection("goals");
   const { name } = req.query;
   console.log(req.query)
+  
 
   try {
     
@@ -15,7 +13,7 @@ export default async function handler(req, res) {
      
       {
         $sort: {
-          totalStrikePoints: -1,
+          goals: -1,
           _id: 1
         }
       }
