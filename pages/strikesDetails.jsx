@@ -18,7 +18,10 @@ import {
   Tbody,
   Tr,
   Td,
-  Th,SimpleGrid,Thead, Container
+  Th,
+  SimpleGrid,
+  Thead,
+  Container,
 } from "@chakra-ui/react";
 import { format, differenceInDays } from "date-fns";
 
@@ -33,20 +36,16 @@ export default function StrikeManager() {
   const [strikeSaveValues, setStrikeSaveValues] = useState([]);
   const [strikeSaveValuesDetails, setStrikeSaveValuesDetails] = useState([]);
 
-  const [goalsSaveValuesDetails, setGoalsSaveValuesDetails] = useState([])
-  const [goalsSaveValues, setGoalsSaveValues] = useState([])
+  const [goalsSaveValuesDetails, setGoalsSaveValuesDetails] = useState([]);
+  const [goalsSaveValues, setGoalsSaveValues] = useState([]);
 
-  
+  const [bad, setBad] = useState(true);
+  const [good, setGood] = useState(false);
 
-  const [bad, setBad] = useState(true)
-  const [good, setGood] = useState(false)
-  
-  
   useEffect(() => {
     setIsClient(true);
     apiStrikes();
     apiGoals();
-    
 
     if (isClient) {
     }
@@ -209,213 +208,125 @@ export default function StrikeManager() {
   };
 
   const handleClickGood = () => {
-    setGood(!good);
+    setGood(true);
     setBad(false);
   };
 
   const handleClickBad = () => {
-    setBad(!bad);
+    setBad(true);
     setGood(false);
   };
 
   return (
 <ChakraProvider>
-<Container maxW="100%" p={4}>
-
-
-<Stack direction="row" spacing={4} align="center">
-  <Button onClick={handleClickGood}>Bem feitorias</Button>
-  <Button onClick={handleClickBad}>Marginalidade</Button>
-</Stack>
-
-        {good ? (
-<>
-  <Center>
-  <Stack spacing={4} width="700px">
-    <Heading as="h1" size="xl" textAlign="center">
-      Ordenado Por Bom Comportamento
-    </Heading>
-
-    <SimpleGrid columns={[1, 2]} gap={4} minChildWidth="200px">
-  {goalsSaveValues.map((item) => (
-    <Box
-      key={item._id}
-      borderWidth="1px"
-      borderRadius="md"
-      p={4}
-      textAlign="center"
-    >
-      <Flex direction="column" h="100%">
-        <Image
-          src={getImagemPorNome(item._id)}
-          alt={item._id}
-          boxSize="100%"
-          objectFit="cover"
-        />
-        <Flex
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          flex="1"
-          marginTop="8px"
-        >
-          <Text>{item._id}</Text>
-          <Text>{item.totalGoals}</Text>
-        </Flex>
-      </Flex>
-    </Box>
-  ))}
-</SimpleGrid>
-
-
-
-    <FormControl>
-      <FormLabel>Elemento</FormLabel>
-      <Text>Selecione o Bom Cidadão Para Verificar Seus Beneficios Pra Sociedade</Text>
-      <Select
-        name="nome"
-        placeholder="Selecione o Meliante"
-        disabled={isNew}
-        onChange={handleNomeChange}
-        value={nome}
-      >
-        {nomes.map((item, index) => (
-          <option key={index} value={item.value}>
-            {item.label}
-          </option>
-        ))}
-      </Select>
-      <Button type="submit" colorScheme="teal" onClick={apiGoalsDetails} mt={2}>
-        Verificar
-      </Button>
-    </FormControl>
-
-    <Stack spacing={4} mt={4}>
-  <Stack direction="row" spacing={4} align="center">
-    <Text>Categoria</Text>
-    <Text>Balls</Text>
-    <Text>Observação</Text>
-    <Text>Data</Text>
-  </Stack>
-  <Grid templateColumns="repeat(4, 1fr)" gap={4}>
-    {goalsSaveValuesDetails.map((item) => (
-      <Stack key={item._id} direction="row" spacing={4} align="center">
-        <Text>{item.incidents}</Text>
-        <Text>{item.goals}</Text>
-        <Text>{item.observationsGoals}</Text>
-        <Text>
-          {item.updateDate
-            ? format(new Date(item.updateDate), "dd/MM/yyyy HH:mm:ss")
-            : ""}
-        </Text>
+  <Container maxW="100%" p={4}>
+    <Center>
+      <Stack direction="row" spacing={4} align="center">
+        <Button onClick={handleClickGood}>Bem feitorias</Button>
+        <Button onClick={handleClickBad}>Marginalidade</Button>
       </Stack>
-    ))}
-  </Grid>
-</Stack>
+    </Center>
 
-  </Stack>
-  </Center>
-  </>
+    {good ? (
+      <>
+        <Center>
+          <Stack spacing={4} width="100%">
+            <Heading as="h1" size="xl" textAlign="center">
+              Ordenado Por Bom Comportamento
+            </Heading>
 
-) : null}
+            <Stack
+              direction={['column', 'row']}
+              spacing={4}
+              align={['center', 'initial']}
+              justify={['center', 'initial']}
+              overflowX="auto" // Adicionando overflowX para ajustar a tabela em dispositivos móveis
+            >
+              <Table variant="simple">
+                <Thead>
+                  <Tr>
+                    <Th>Categoria</Th>
+                    <Th>Balls</Th>
+                    <Th>Observação</Th>
+                    <Th>Data</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {goalsSaveValuesDetails.map((item) => (
+                    <Tr key={item._id}>
+                      <Td>{item.incidents}</Td>
+                      <Td>{item.goals}</Td>
+                      <Td>{item.observationsGoals}</Td>
+                      <Td>
+                        {item.updateDate
+                          ? format(
+                              new Date(item.updateDate),
+                              "dd/MM/yyyy HH:mm:ss"
+                            )
+                          : ""}
+                      </Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            </Stack>
+          </Stack>
+        </Center>
+      </>
+    ) : null}
 
-{bad ? (
-<>
-  <Center>
-  <Stack spacing={4} width="700px">
-    <Heading as="h1" size="xl" textAlign="center">
-      Ordenado Por Mau Comportamento
-    </Heading>
+    {bad ? (
+      <>
+        <Center>
+          <Stack spacing={4} width="100%">
+            <Heading as="h1" size="xl" textAlign="center">
+              Ordenado Por Mau Comportamento
+            </Heading>
 
-    <SimpleGrid columns={[1, 2]} gap={4}>
-  {strikeSaveValues.map((item) => (
-    <Box
-      key={item._id}
-      borderWidth="1px"
-      borderRadius="md"
-      p={4}
-      textAlign="center"
-    >
-      <Flex direction="column" h="100%">
-        <Image
-          src={getImagemPorNome(item._id)}
-          alt={item._id}
-          boxSize="100%"
-          objectFit="cover"
-        />
-        <Flex
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          flex="1"
-          marginTop="8px"
-        >
-          <Text>{item._id}</Text>
-          <Text>{item.totalStrikePoints}</Text>
-        </Flex>
-      </Flex>
-    </Box>
-  ))}
-</SimpleGrid>
+            <Stack
+              direction={['column', 'row']}
+              spacing={4}
+              align={['center', 'initial']}
+              justify={['center', 'initial']}
+              overflowX="auto" // Adicionando overflowX para ajustar a tabela em dispositivos móveis
+            >
+              <Table variant="simple">
+                <Thead>
+                  <Tr>
+                    <Th>Categoria</Th>
+                    <Th>Strike Points</Th>
+                    <Th>Observação</Th>
+                    <Th>Data</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {strikeSaveValuesDetails.map((item) => (
+                    <Tr key={item._id}>
+                      <Td>{item.incidents}</Td>
+                      <Td>{item.strikePoints}</Td>
+                      <Td>{item.observations}</Td>
+                      <Td>
+                        {item.updateDate
+                          ? format(
+                              new Date(item.updateDate),
+                              "dd/MM/yyyy HH:mm:ss"
+                            )
+                          : ""}
+                      </Td>
+                    </Tr>
+                  ))}
+                </Tbody>
+              </Table>
+            </Stack>
+          </Stack>
+        </Center>
+      </>
+    ) : null}
 
-
-    <FormControl>
-      <FormLabel>Elemento</FormLabel>
-      <Text>Selecione o Meliante para verificar os detalhes</Text>
-      <Select
-        name="nome"
-        placeholder="Selecione o Meliante"
-        disabled={isNew}
-        onChange={handleNomeChange}
-        value={nome}
-      >
-        {nomes.map((item, index) => (
-          <option key={index} value={item.value}>
-            {item.label}
-          </option>
-        ))}
-      </Select>
-      <Button type="submit" colorScheme="teal" onClick={apiStrikesDetails} mt={2}>
-        Verificar
-      </Button>
-    </FormControl>
-
-    <Stack spacing={4} mt={4}>
-  <Stack direction="row" spacing={4} align="center">
-    <Text>Categoria</Text>
-    <Text>Strike Points</Text>
-    <Text>Observação</Text>
-    <Text>Data</Text>
-  </Stack>
-  <Grid templateColumns="repeat(4, 1fr)" gap={4}>
-    {strikeSaveValuesDetails.map((item) => (
-      <Stack key={item._id} direction="row" spacing={4} align="center">
-        <Text>{item.incidents}</Text>
-        <Text>{item.strikePoints}</Text>
-        <Text>{item.observations}</Text>
-        <Text>
-          {item.updateDate
-            ? format(new Date(item.updateDate), "dd/MM/yyyy HH:mm:ss")
-            : ""}
-        </Text>
-      </Stack>
-    ))}
-  </Grid>
-</Stack>
-
-  </Stack>
-  </Center>
-  </>
-  ) : null}
-
-
-
-
-
-
-  <Box h="50vh" w="100%" /> {/* Espaço vazio para rolagem */}
+    <Box h="50vh" w="100%" /> {/* Espaço vazio para rolagem */}
   </Container>
 </ChakraProvider>
+
 
 
   );
