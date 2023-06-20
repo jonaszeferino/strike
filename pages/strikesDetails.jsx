@@ -218,116 +218,227 @@ export default function StrikeManager() {
   };
 
   return (
-<ChakraProvider>
-  <Container maxW="100%" p={4}>
-    <Center>
-      <Stack direction="row" spacing={4} align="center">
-        <Button onClick={handleClickGood}>Bem feitorias</Button>
-        <Button onClick={handleClickBad}>Marginalidade</Button>
-      </Stack>
-    </Center>
-
-    {good ? (
-      <>
+    <ChakraProvider>
+      <Container maxW="100%" p={4}>
         <Center>
-          <Stack spacing={4} width="100%">
-            <Heading as="h1" size="xl" textAlign="center">
-              Ordenado Por Bom Comportamento
-            </Heading>
-
-            <Stack
-              direction={['column', 'row']}
-              spacing={4}
-              align={['center', 'initial']}
-              justify={['center', 'initial']}
-              overflowX="auto" // Adicionando overflowX para ajustar a tabela em dispositivos móveis
-            >
-              <Table variant="simple">
-                <Thead>
-                  <Tr>
-                    <Th>Categoria</Th>
-                    <Th>Balls</Th>
-                    <Th>Observação</Th>
-                    <Th>Data</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {goalsSaveValuesDetails.map((item) => (
-                    <Tr key={item._id}>
-                      <Td>{item.incidents}</Td>
-                      <Td>{item.goals}</Td>
-                      <Td>{item.observationsGoals}</Td>
-                      <Td>
-                        {item.updateDate
-                          ? format(
-                              new Date(item.updateDate),
-                              "dd/MM/yyyy HH:mm:ss"
-                            )
-                          : ""}
-                      </Td>
-                    </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            </Stack>
+          <Stack direction="row" spacing={4} align="center">
+            <Button onClick={handleClickGood}>Bem feitorias</Button>
+            <Button onClick={handleClickBad}>Marginalidade</Button>
           </Stack>
         </Center>
-      </>
-    ) : null}
+        {good ? (
+          <>
+            <Center>
+              <Stack spacing={4} width="100%">
+                <Heading as="h1" size="xl" textAlign="center">
+                  Ordenado Por Bom Comportamento
+                </Heading>
 
-    {bad ? (
-      <>
-        <Center>
-          <Stack spacing={4} width="100%">
-            <Heading as="h1" size="xl" textAlign="center">
-              Ordenado Por Mau Comportamento
-            </Heading>
-
-            <Stack
-              direction={['column', 'row']}
-              spacing={4}
-              align={['center', 'initial']}
-              justify={['center', 'initial']}
-              overflowX="auto" // Adicionando overflowX para ajustar a tabela em dispositivos móveis
-            >
-              <Table variant="simple">
-                <Thead>
-                  <Tr>
-                    <Th>Categoria</Th>
-                    <Th>Strike Points</Th>
-                    <Th>Observação</Th>
-                    <Th>Data</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {strikeSaveValuesDetails.map((item) => (
-                    <Tr key={item._id}>
-                      <Td>{item.incidents}</Td>
-                      <Td>{item.strikePoints}</Td>
-                      <Td>{item.observations}</Td>
-                      <Td>
-                        {item.updateDate
-                          ? format(
-                              new Date(item.updateDate),
-                              "dd/MM/yyyy HH:mm:ss"
-                            )
-                          : ""}
-                      </Td>
-                    </Tr>
+                <SimpleGrid columns={[1, 2]} gap={4} minChildWidth="200px">
+                  {goalsSaveValues.map((item) => (
+                    <Box
+                      key={item._id}
+                      borderWidth="1px"
+                      borderRadius="md"
+                      p={4}
+                      textAlign="center"
+                    >
+                      <Flex direction="column" h="100%">
+                        <Image
+                          src={getImagemPorNome(item._id)}
+                          alt={item._id}
+                          boxSize="100%"
+                          objectFit="cover"
+                        />
+                        <Flex
+                          direction="column"
+                          justifyContent="center"
+                          alignItems="center"
+                          flex="1"
+                          marginTop="8px"
+                        >
+                          <Text>{item._id}</Text>
+                          <Text>{item.totalGoals}</Text>
+                        </Flex>
+                      </Flex>
+                    </Box>
                   ))}
-                </Tbody>
-              </Table>
-            </Stack>
-          </Stack>
-        </Center>
-      </>
-    ) : null}
+                </SimpleGrid>
 
-    <Box h="50vh" w="100%" /> {/* Espaço vazio para rolagem */}
-  </Container>
-</ChakraProvider>
+                <FormControl>
+                  <FormLabel>Elemento</FormLabel>
+                  <Text>
+                    Selecione o Bom Cidadão Para Verificar Seus Beneficios Pra
+                    Sociedade
+                  </Text>
+                  <Select
+                    name="nome"
+                    placeholder="Selecione o Meliante"
+                    disabled={isNew}
+                    onChange={handleNomeChange}
+                    value={nome}
+                  >
+                    {nomes.map((item, index) => (
+                      <option key={index} value={item.value}>
+                        {item.label}
+                      </option>
+                    ))}
+                  </Select>
+                  <Button
+                    type="submit"
+                    colorScheme="teal"
+                    onClick={apiGoalsDetails}
+                    mt={2}
+                  >
+                    Verificar
+                  </Button>
+                </FormControl>
 
+                <Stack
+                  direction={["column", "row"]}
+                  spacing={4}
+                  align={["center", "initial"]}
+                  justify={["center", "initial"]}
+                  overflowX="auto" // Adicionando overflowX para ajustar a tabela em dispositivos móveis
+                >
+                  <Table variant="simple">
+                    <Thead>
+                      <Tr>
+                        <Th>Categoria</Th>
+                        <Th>Balls</Th>
+                        <Th>Observação</Th>
+                        <Th>Data</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {goalsSaveValuesDetails.map((item) => (
+                        <Tr key={item._id}>
+                          <Td>{item.incidents}</Td>
+                          <Td>{item.goals}</Td>
+                          <Td>{item.observationsGoals}</Td>
+                          <Td>
+                            {item.updateDate
+                              ? format(
+                                  new Date(item.updateDate),
+                                  "dd/MM/yyyy HH:mm:ss"
+                                )
+                              : ""}
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </Stack>
+              </Stack>
+            </Center>
+          </>
+        ) : null}
+        {bad ? (
+          <>
+            <Center>
+              <Stack spacing={4} width="100%">
+                <Heading as="h1" size="xl" textAlign="center">
+                  Ordenado Por Mau Comportamento
+                </Heading>
 
+                <SimpleGrid columns={[1, 2]} gap={4} minChildWidth="200px">
+                  {strikeSaveValues.map((item) => (
+                    <Box
+                      key={item._id}
+                      borderWidth="1px"
+                      borderRadius="md"
+                      p={4}
+                      textAlign="center"
+                    >
+                      <Flex direction="column" h="100%">
+                        <Image
+                          src={getImagemPorNome(item._id)}
+                          alt={item._id}
+                          boxSize="100%"
+                          objectFit="cover"
+                        />
+                        <Flex
+                          direction="column"
+                          justifyContent="center"
+                          alignItems="center"
+                          flex="1"
+                          marginTop="8px"
+                        >
+                          <Text>{item._id}</Text>
+                          <Text>{item.totalStrikePoints}</Text>
+                        </Flex>
+                      </Flex>
+                    </Box>
+                  ))}
+                </SimpleGrid>
 
+                <FormControl>
+                  <FormLabel>Elemento</FormLabel>
+                  <Text>Selecione o Meliante para verificar os detalhes</Text>
+                  <Select
+                    name="nome"
+                    placeholder="Selecione o Meliante"
+                    disabled={isNew}
+                    onChange={handleNomeChange}
+                    value={nome}
+                  >
+                    {nomes.map((item, index) => (
+                      <option key={index} value={item.value}>
+                        {item.label}
+                      </option>
+                    ))}
+                  </Select>
+                  <Button
+                    type="submit"
+                    colorScheme="teal"
+                    onClick={apiStrikesDetails}
+                    mt={2}
+                  >
+                    Verificar
+                  </Button>
+                </FormControl>
+
+                <Stack
+                  direction={["column", "row"]}
+                  spacing={4}
+                  align={["center", "initial"]}
+                  justify={["center", "initial"]}
+                  overflowX="auto" // Adicionando overflowX para ajustar a tabela em dispositivos móveis
+                >
+                  <Table variant="simple">
+                    <Thead>
+                      <Tr>
+                        <Th>Categoria</Th>
+                        <Th>Strike Points</Th>
+                        <Th>Observação</Th>
+                        <Th>Data</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {strikeSaveValuesDetails.map((item) => (
+                        <Tr key={item._id}>
+                          <Td>{item.incidents}</Td>
+                          <Td>{item.strikePoints}</Td>
+                          <Td>{item.observations}</Td>
+                          <Td>
+                            {item.updateDate
+                              ? format(
+                                  new Date(item.updateDate),
+                                  "dd/MM/yyyy HH:mm:ss"
+                                )
+                              : ""}
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </Stack>
+              </Stack>
+            </Center>
+          </>
+        ) : null}
+        <Box h="50vh" w="100%" /> {/* Espaço vazio para rolagem */}
+      </Container>
+    </ChakraProvider>
   );
 }
