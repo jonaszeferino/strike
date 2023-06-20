@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import {
   FormControl,
+  Flex,
   FormLabel,
   Select,
   Stack,
@@ -17,7 +18,7 @@ import {
   Tbody,
   Tr,
   Td,
-  Th,SimpleGrid,Thead
+  Th,SimpleGrid,Thead, Container
 } from "@chakra-ui/react";
 import { format, differenceInDays } from "date-fns";
 
@@ -219,12 +220,14 @@ export default function StrikeManager() {
 
   return (
 <ChakraProvider>
+<Container maxW="100%" p={4}>
 
-<Center>
-        <Button onClick={handleClickGood}>Bem feitorias</Button>
-        <Button onClick={handleClickBad}>Marginalidade</Button>
- 
-        </Center>
+
+<Stack direction="row" spacing={4} align="center">
+  <Button onClick={handleClickGood}>Bem feitorias</Button>
+  <Button onClick={handleClickBad}>Marginalidade</Button>
+</Stack>
+
         {good ? (
 <>
   <Center>
@@ -233,26 +236,38 @@ export default function StrikeManager() {
       Ordenado Por Bom Comportamento
     </Heading>
 
-    <SimpleGrid columns={[1, 2]} gap={4}>
-      {goalsSaveValues.map((item) => (
-        <Box
-          key={item._id}
-          borderWidth="1px"
-          borderRadius="md"
-          p={4}
-          textAlign="center"
+    <SimpleGrid columns={[1, 2]} gap={4} minChildWidth="200px">
+  {goalsSaveValues.map((item) => (
+    <Box
+      key={item._id}
+      borderWidth="1px"
+      borderRadius="md"
+      p={4}
+      textAlign="center"
+    >
+      <Flex direction="column" h="100%">
+        <Image
+          src={getImagemPorNome(item._id)}
+          alt={item._id}
+          boxSize="100%"
+          objectFit="cover"
+        />
+        <Flex
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          flex="1"
+          marginTop="8px"
         >
-          <Image
-            src={getImagemPorNome(item._id)}
-            alt={item._id}
-            boxSize="100%"
-            objectFit="cover"
-          />
           <Text>{item._id}</Text>
           <Text>{item.totalGoals}</Text>
-        </Box>
-      ))}
-    </SimpleGrid>
+        </Flex>
+      </Flex>
+    </Box>
+  ))}
+</SimpleGrid>
+
+
 
     <FormControl>
       <FormLabel>Elemento</FormLabel>
@@ -275,30 +290,29 @@ export default function StrikeManager() {
       </Button>
     </FormControl>
 
-    <Table mt={4} variant="simple">
-      <Thead>
-        <Tr>
-          <Th>Categoria</Th>
-          <Th>Balls</Th>
-          <Th>Observação</Th>
-          <Th>Data</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        {goalsSaveValuesDetails.map((item) => (
-          <Tr key={item._id}>
-            <Td>{item.incidents}</Td>
-            <Td>{item.goals}</Td>
-            <Td>{item.observationsGoals}</Td>
-            <Td>
-              {item.updateDate
-                ? format(new Date(item.updateDate), "dd/MM/yyyy HH:mm:ss")
-                : ""}
-            </Td>
-          </Tr>
-        ))}
-      </Tbody>
-    </Table>
+    <Stack spacing={4} mt={4}>
+  <Stack direction="row" spacing={4} align="center">
+    <Text>Categoria</Text>
+    <Text>Balls</Text>
+    <Text>Observação</Text>
+    <Text>Data</Text>
+  </Stack>
+  <Grid templateColumns="repeat(4, 1fr)" gap={4}>
+    {goalsSaveValuesDetails.map((item) => (
+      <Stack key={item._id} direction="row" spacing={4} align="center">
+        <Text>{item.incidents}</Text>
+        <Text>{item.goals}</Text>
+        <Text>{item.observationsGoals}</Text>
+        <Text>
+          {item.updateDate
+            ? format(new Date(item.updateDate), "dd/MM/yyyy HH:mm:ss")
+            : ""}
+        </Text>
+      </Stack>
+    ))}
+  </Grid>
+</Stack>
+
   </Stack>
   </Center>
   </>
@@ -314,25 +328,36 @@ export default function StrikeManager() {
     </Heading>
 
     <SimpleGrid columns={[1, 2]} gap={4}>
-      {strikeSaveValues.map((item) => (
-        <Box
-          key={item._id}
-          borderWidth="1px"
-          borderRadius="md"
-          p={4}
-          textAlign="center"
+  {strikeSaveValues.map((item) => (
+    <Box
+      key={item._id}
+      borderWidth="1px"
+      borderRadius="md"
+      p={4}
+      textAlign="center"
+    >
+      <Flex direction="column" h="100%">
+        <Image
+          src={getImagemPorNome(item._id)}
+          alt={item._id}
+          boxSize="100%"
+          objectFit="cover"
+        />
+        <Flex
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+          flex="1"
+          marginTop="8px"
         >
-          <Image
-            src={getImagemPorNome(item._id)}
-            alt={item._id}
-            boxSize="100%"
-            objectFit="cover"
-          />
           <Text>{item._id}</Text>
           <Text>{item.totalStrikePoints}</Text>
-        </Box>
-      ))}
-    </SimpleGrid>
+        </Flex>
+      </Flex>
+    </Box>
+  ))}
+</SimpleGrid>
+
 
     <FormControl>
       <FormLabel>Elemento</FormLabel>
@@ -355,30 +380,29 @@ export default function StrikeManager() {
       </Button>
     </FormControl>
 
-    <Table mt={4} variant="simple">
-      <Thead>
-        <Tr>
-          <Th>Categoria</Th>
-          <Th>Strike Points</Th>
-          <Th>Observação</Th>
-          <Th>Data</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        {strikeSaveValuesDetails.map((item) => (
-          <Tr key={item._id}>
-            <Td>{item.incidents}</Td>
-            <Td>{item.strikePoints}</Td>
-            <Td>{item.observations}</Td>
-            <Td>
-              {item.updateDate
-                ? format(new Date(item.updateDate), "dd/MM/yyyy HH:mm:ss")
-                : ""}
-            </Td>
-          </Tr>
-        ))}
-      </Tbody>
-    </Table>
+    <Stack spacing={4} mt={4}>
+  <Stack direction="row" spacing={4} align="center">
+    <Text>Categoria</Text>
+    <Text>Strike Points</Text>
+    <Text>Observação</Text>
+    <Text>Data</Text>
+  </Stack>
+  <Grid templateColumns="repeat(4, 1fr)" gap={4}>
+    {strikeSaveValuesDetails.map((item) => (
+      <Stack key={item._id} direction="row" spacing={4} align="center">
+        <Text>{item.incidents}</Text>
+        <Text>{item.strikePoints}</Text>
+        <Text>{item.observations}</Text>
+        <Text>
+          {item.updateDate
+            ? format(new Date(item.updateDate), "dd/MM/yyyy HH:mm:ss")
+            : ""}
+        </Text>
+      </Stack>
+    ))}
+  </Grid>
+</Stack>
+
   </Stack>
   </Center>
   </>
@@ -390,7 +414,7 @@ export default function StrikeManager() {
 
 
   <Box h="50vh" w="100%" /> {/* Espaço vazio para rolagem */}
-  
+  </Container>
 </ChakraProvider>
 
 

@@ -270,12 +270,12 @@ export default function StrikeManager() {
 
   
     const handleClickGood = () => {
-      setGood(!good);
+      setGood(true);
       setBad(false);
     };
 
     const handleClickBad = () => {
-      setBad(!bad);
+      setBad(true);
       setGood(false);
     };
   
