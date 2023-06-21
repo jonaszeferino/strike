@@ -300,7 +300,7 @@ export default function StrikeManager() {
       
         <Stack spacing={4} width="600px">
         <Heading as="h1" size="xl">
-  Ball Manager - Cidadãos de Bem
+  Cidadãos de Bem
 </Heading>
           <form onSubmit={handleSubmit} method="post">
             <FormControl>
@@ -447,7 +447,7 @@ export default function StrikeManager() {
 
     <Stack spacing={4} width="600px">
     <Heading as="h1" size="xl">
-  Strikes Manager - Cidadãos de Conduta Questionável
+  Cidadãos de Conduta Questionável
 </Heading>
       <form onSubmit={handleSubmit} method="post">
         <FormControl>
