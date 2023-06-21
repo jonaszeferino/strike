@@ -406,7 +406,7 @@ export default function StrikeManager() {
       <Center>
       <div>
       {/* Conteúdo da sua página */}
-      <Button onClick={handleScreenshot}>Capturar Screenshot</Button>
+      {/* <Button onClick={handleScreenshot}>Capturar Screenshot</Button> */}
     </div>
     </Center>
       <br />
@@ -425,7 +425,7 @@ export default function StrikeManager() {
       </Center>
       <br />
       <Center>
-        <Stack spacing={4}>
+        <Stack spacing={4} margin="20px">
           <Heading as="h1" size="xl">
             Ordenado Por Bom Cidadão 
           </Heading>
@@ -555,7 +555,7 @@ export default function StrikeManager() {
   <Center>
   <div>
   {/* Conteúdo da sua página */}
-  <Button onClick={handleScreenshot}>Capturar Screenshot</Button>
+  {/* <Button onClick={handleScreenshot}>Capturar Screenshot</Button> */}
 </div>
 </Center>
   <br />
@@ -574,7 +574,7 @@ export default function StrikeManager() {
   </Center>
   <br />
   <Center>
-    <Stack spacing={4}>
+    <Stack spacing={4} margin="20px">
       <Heading as="h1" size="xl">
         Ordenado Por Mau Comportamento
       </Heading>
