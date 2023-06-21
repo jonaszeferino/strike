@@ -282,9 +282,14 @@ export default function StrikeManager() {
   return (
  
  <ChakraProvider>
+ <br/>
   <Center>
-        <Button onClick={handleClickGood}>Bem feitorias</Button>
-        <Button onClick={handleClickBad}>Marginalidade</Button>
+  
+        <Button onClick={handleClickGood}
+                      colorScheme={good ? "purple" : "gray"}
+                      >Bem feitorias</Button>
+        <Button onClick={handleClickBad}               colorScheme={bad ? "purple" : "gray"}
+>Marginalidade</Button>
         </Center>
    {good ? (
   <>
