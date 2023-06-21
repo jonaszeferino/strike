@@ -22,6 +22,7 @@ import {
   SimpleGrid,
   Thead,
   Container,
+  Spinner
 } from "@chakra-ui/react";
 import { format, differenceInDays } from "date-fns";
 
@@ -41,6 +42,8 @@ export default function StrikeManager() {
 
   const [bad, setBad] = useState(true);
   const [good, setGood] = useState(false);
+  const [loading,setLoading] = useState(false);
+
 
   useEffect(() => {
     setIsClient(true);
@@ -52,6 +55,7 @@ export default function StrikeManager() {
   }, [isClient]);
 
   const apiStrikes = async () => {
+    setLoading(true)
     console.log("apiStrikes called");
     try {
       const response = await fetch("/api/v1/getStrikeValues", {
@@ -62,6 +66,8 @@ export default function StrikeManager() {
       });
       const data = await response.json();
       setStrikeSaveValues(data);
+      setLoading(false);
+
 
       return data;
     } catch (error) {
@@ -92,6 +98,8 @@ export default function StrikeManager() {
   };
 
   const apiGoals = async () => {
+    setLoading(true)
+
     console.log("apiStrikes called");
     try {
       const response = await fetch("/api/v1/getGoalsValues", {
@@ -102,6 +110,8 @@ export default function StrikeManager() {
       });
       const data = await response.json();
       setGoalsSaveValues(data);
+      setLoading(false);
+
 
       return data;
     } catch (error) {
@@ -220,6 +230,13 @@ export default function StrikeManager() {
   return (
     <ChakraProvider>
       <Container maxW="100%" p={4}>
+
+      <div>
+    <Center>
+    {loading && <Spinner />}
+    
+    </Center>
+  </div>
         <Center>
           <Stack direction="row" spacing={4} align="center">
             <Button onClick={handleClickGood}

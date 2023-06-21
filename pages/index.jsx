@@ -20,7 +20,8 @@ import {
   NumberDecrementStepper,
   Input,
   InputGroup,
-  InputLeftAddon
+  InputLeftAddon,
+  Spinner
 } from "@chakra-ui/react";
 
 export default function StrikeManager() {
@@ -36,6 +37,7 @@ export default function StrikeManager() {
   const [observationsGoals, setObservationsGoals] = useState("");
   const [strikeSaveValues, setStrikeSaveValues] = useState([]);
   const [goalsSaveValues,setGoalsSaveValues] = useState([]);
+  const [loading,setLoading] = useState(false);
   
   const [bad, setBad] = useState(true)
   const [good, setGood] = useState(false)
@@ -53,6 +55,7 @@ export default function StrikeManager() {
   }, [isClient]);
 
   const apiStrikes = async () => {
+    setLoading(true);
     console.log("apiStrikes called");
     try {
       const response = await fetch("/api/v1/getStrikeValues", {
@@ -63,6 +66,7 @@ export default function StrikeManager() {
       });
       const data = await response.json();
       setStrikeSaveValues(data);
+      setLoading(false);
 
       return data;
     } catch (error) {
@@ -71,6 +75,7 @@ export default function StrikeManager() {
   };
 
   const apiGoals = async () => {
+    setLoading(true);
     console.log("apiStrikes called");
     try {
       const response = await fetch("/api/v1/getGoalsValues", {
@@ -81,6 +86,8 @@ export default function StrikeManager() {
       });
       const data = await response.json();
       setGoalsSaveValues(data);
+      setLoading(false);
+
 
       return data;
     } catch (error) {
@@ -293,12 +300,16 @@ export default function StrikeManager() {
 >Marginalidade</Button>
 </Stack>
         </Center>
+
+
+
    {good ? (
   <>
   {/* //BOM */}
       <Center>
       
-        <Stack spacing={4} width="600px">
+        <Stack spacing={4} width="600px"  margin="20px">
+
         <Heading as="h1" size="xl">
   Cidadãos de Bem
 </Heading>
@@ -445,7 +456,7 @@ export default function StrikeManager() {
 <>
   <Center>
 
-    <Stack spacing={4} width="600px">
+    <Stack spacing={4} width="600px" margin="20px">
     <Heading as="h1" size="xl">
   Cidadãos de Conduta Questionável
 </Heading>
