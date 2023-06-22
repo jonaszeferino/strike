@@ -446,8 +446,11 @@ export default function StrikeManager() {
               <Text>{item.totalGoals}</Text>
             </Box>
           ))}
-        </Grid>
+        </Grid >
       </Center>
+      <Box>
+        <br/>
+      </Box>
 
       </>
       ) : null}
@@ -597,6 +600,9 @@ export default function StrikeManager() {
       ))}
     </Grid>
   </Center>
+  <Box>
+        <br/>
+      </Box>
 
   </>
   ) : null}

@@ -233,7 +233,14 @@ export default function StrikeManager() {
 
       <div>
     <Center>
-    {loading && <Spinner />}
+    {loading && (
+      <Box>
+        <Center>
+        <Spinner />
+        <p> Carregando...</p>
+        </Center>
+      </Box>
+    )}
     
     </Center>
   </div>
