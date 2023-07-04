@@ -38,6 +38,7 @@ export default function StrikeManager() {
   const [strikeSaveValues, setStrikeSaveValues] = useState([]);
   const [goalsSaveValues,setGoalsSaveValues] = useState([]);
   const [loading,setLoading] = useState(false);
+  const [isEnable, setIsEnable] = useState(false);
   
   const [bad, setBad] = useState(true)
   const [good, setGood] = useState(false)
@@ -167,6 +168,7 @@ export default function StrikeManager() {
 
   const apiCall = async () => {
     setIsNew(true);
+    setIsEnable(true);
     try {
       const response = await fetch("/api/v1/putStrikeManager", {
         method: "PUT",
