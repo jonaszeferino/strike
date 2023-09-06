@@ -22,6 +22,7 @@ import {
   InputGroup,
   InputLeftAddon,
   Spinner,
+  Switch
 } from "@chakra-ui/react";
 import { supabase } from "../utils/supabaseClient";
 
@@ -46,8 +47,17 @@ export default function StrikeManager() {
   const [session, setSession] = useState(false);
   const [siLoading, setIsLoading] = useState(false);
 
-  console.log(observationsStrike);
-  console.log(strikeSaveValues);
+  const [isGood, setIsGood] = useState(true);
+
+  const handleToggle = () => {
+    if (!isGood) {
+      handleClickGood();
+    } else {
+      handleClickBad();
+    }
+    setIsGood(!isGood);
+  };
+
 
   useEffect(() => {
     setIsClient(true);
@@ -339,18 +349,9 @@ export default function StrikeManager() {
       <br />
       <Center>
         <Stack direction="row" spacing={4} align="center">
-          <Button
-            onClick={handleClickGood}
-            colorScheme={good ? "purple" : "gray"}
-          >
-            Bem feitorias
-          </Button>
-          <Button
-            onClick={handleClickBad}
-            colorScheme={bad ? "purple" : "gray"}
-          >
-            Marginalidade
-          </Button>
+        <Switch size="lg" onChange={handleToggle} isChecked={isGood} colorScheme="purple">
+        {isGood ? "Bem feitorias" : "Marginalidade"}
+      </Switch>
         </Stack>
       </Center>
 

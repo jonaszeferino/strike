@@ -436,9 +436,6 @@ export default function StrikeManager() {
                   </Table>
                 </Stack>
 
-           
-
-
                 <FormControl>
                   <FormLabel>Elemento</FormLabel>
                   <Text>
