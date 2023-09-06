@@ -39,6 +39,10 @@ export default function StrikeManager() {
   const [strikeSaveValuesDetails, setStrikeSaveValuesDetails] = useState([]);
 
   const [goalsSaveValuesDetails, setGoalsSaveValuesDetails] = useState([]);
+  const [lastStrikesSaveValuesDetails, setLastStrikesSaveValuesDetails] =
+    useState([]);
+    const [lastGoalsSaveValuesDetails, setLastGoalsSaveValuesDetails] =
+    useState([]);  
   const [goalsSaveValues, setGoalsSaveValues] = useState([]);
 
   const [bad, setBad] = useState(true);
@@ -52,6 +56,8 @@ export default function StrikeManager() {
     setIsClient(true);
     apiStrikes();
     apiGoals();
+    apiLastStrikes();
+    apiLastGoals();
 
     if (isClient) {
     }
@@ -133,7 +139,7 @@ export default function StrikeManager() {
         }
       );
       const data = await response.json();
-      setGoalsSaveValuesDetails(data);
+      setLastGoalsSaveValuesDetails(data);
       console.log(data);
 
       return data;
@@ -253,6 +259,46 @@ export default function StrikeManager() {
     };
   }, []);
 
+  ///NOVOS RECURSOS
+  const apiLastStrikes = async () => {
+    console.log("apiStrikes called");
+    try {
+      const response = await fetch(`/api/v1/getLastStrikeValuesDetails`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      setLastStrikesSaveValuesDetails(data);
+      console.log(data);
+
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+
+  const apiLastGoals = async () => {
+    console.log("apiStrikes called");
+    try {
+      const response = await fetch(`/api/v1/getLastGoalsValuesDetails`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      setLastGoalsSaveValuesDetails(data);
+      console.log(data);
+
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <ChakraProvider>
       <Center>
@@ -342,6 +388,55 @@ export default function StrikeManager() {
                   ))}
                 </SimpleGrid>
 
+                <Heading as="h1" size="xl" textAlign="center">
+                  Últimos 20 Goals Gerais{" "}
+                </Heading>
+                <Stack
+                  direction={["column", "row"]}
+                  spacing={4}
+                  align={["center", "initial"]}
+                  justify={["center", "initial"]}
+                  overflowX="auto" // Adicionando overflowX para ajustar a tabela em dispositivos móveis
+                >
+                  <Table variant="simple">
+                    <Thead>
+                      <Tr>
+                        <Th>Cidadão</Th>
+                        <Th>Categoria</Th>
+                        <Th>Strike Points</Th>
+                        <Th>Observação</Th>
+                        <Th>Data</Th>
+                        <Th>Altruista</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {lastGoalsSaveValuesDetails.map((item) => (
+                                             <Tr key={item._id}>
+                                                                                           <Td>{item.name}</Td>
+
+                                             <Td>{item.incidents}</Td>
+                                             <Td>{item.goals}</Td>
+                                             <Td>{item.observationsGoals}</Td>
+                                             <Td>
+                                               {item.updateDate
+                                                 ? format(
+                                                     new Date(item.updateDate),
+                                                     "dd/MM/yyyy HH:mm:ss"
+                                                   )
+                                                 : ""}
+                                             </Td>
+                                             <Td>
+                                               {item.user_email
+                                                 ? item.user_email
+                                                 : "Poder Moderador"}
+                                             </Td>
+                                           </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </Stack>
+
+
                 <FormControl>
                   <FormLabel>Elemento</FormLabel>
                   <Text>
@@ -370,6 +465,48 @@ export default function StrikeManager() {
                     Verificar
                   </Button>
                 </FormControl>
+
+                <Stack
+                  direction={["column", "row"]}
+                  spacing={4}
+                  align={["center", "initial"]}
+                  justify={["center", "initial"]}
+                  overflowX="auto" // Adicionando overflowX para ajustar a tabela em dispositivos móveis
+                >
+                  <Table variant="simple">
+                    <Thead>
+                      <Tr>
+                        <Th>Categoria</Th>
+                        <Th>Balls</Th>
+                        <Th>Observação</Th>
+                        <Th>Data</Th>
+                        <Th>Altruista</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {goalsSaveValuesDetails.map((item) => (
+                        <Tr key={item._id}>
+                          <Td>{item.incidents}</Td>
+                          <Td>{item.goals}</Td>
+                          <Td>{item.observationsGoals}</Td>
+                          <Td>
+                            {item.updateDate
+                              ? format(
+                                  new Date(item.updateDate),
+                                  "dd/MM/yyyy HH:mm:ss"
+                                )
+                              : ""}
+                          </Td>
+                          <Td>
+                            {item.user_email
+                              ? item.user_email
+                              : "Poder Moderador"}
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </Stack>
 
                 <Stack
                   direction={["column", "row"]}
@@ -454,6 +591,54 @@ export default function StrikeManager() {
                     </Box>
                   ))}
                 </SimpleGrid>
+                <Heading as="h1" size="xl" textAlign="center">
+                  Últimos 20 Strikes Gerais{" "}
+                </Heading>
+                <Stack
+                  direction={["column", "row"]}
+                  spacing={4}
+                  align={["center", "initial"]}
+                  justify={["center", "initial"]}
+                  overflowX="auto" // Adicionando overflowX para ajustar a tabela em dispositivos móveis
+                >
+                  <Table variant="simple">
+                    <Thead>
+                      <Tr>
+                        <Th>Meliante</Th>
+                        <Th>Categoria</Th>
+                        <Th>Strike Points</Th>
+                        <Th>Observação</Th>
+                        <Th>Data</Th>
+                        <Th>Delegado</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {lastStrikesSaveValuesDetails.map((item) => (
+                        <Tr key={item._id}>
+                          <Td>{item.name}</Td>
+
+                          <Td>{item.incidents}</Td>
+                          <Td>{item.strikePoints}</Td>
+                          <Td>{item.observations}</Td>
+                          <Td>
+                            {item.updateDate
+                              ? format(
+                                  new Date(item.updateDate),
+                                  "dd/MM/yyyy HH:mm:ss"
+                                )
+                              : ""}
+                          </Td>
+
+                          <Td>
+                            {item.user_email
+                              ? item.user_email
+                              : "Poder Moderador"}
+                          </Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </Stack>
 
                 <FormControl>
                   <FormLabel>Elemento</FormLabel>
