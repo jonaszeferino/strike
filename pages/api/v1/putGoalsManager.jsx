@@ -1,7 +1,7 @@
 import client from "../../../mongoConnection";
 
 export default async function handler(req, res) {
-  const { name, incidents, goals, observationsGoals } = req.body;
+  const { name, incidents, goals, observationsGoals, user_email } = req.body;
 
   let goalsConvert = parseInt(goals)
   let date = new Date();
@@ -16,7 +16,8 @@ export default async function handler(req, res) {
       incidents: incidents ? incidents : null,
       goals: goalsConvert ? goalsConvert : null,
       observationsGoals: observationsGoals ? observationsGoals : "Pontução por Caridade - Muita Mão Digitar algo",
-      updateDate: date
+      updateDate: date,
+      user_email: user_email
  });
    
     console.log(result);

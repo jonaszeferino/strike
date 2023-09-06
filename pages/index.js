@@ -181,10 +181,10 @@ export default function StrikeManager() {
           incidents: ocorrencia,
           strikePoints: strikeValue,
           observations: observationsStrike,
+          user_email: session?.user?.email || "strikemanager@gmail.com"
         }),
       });
       const data = await response.json();
-
       setIsSent(true);
       setOcorrencia("");
       apiStrikes();
@@ -207,6 +207,7 @@ export default function StrikeManager() {
           incidents: ocorrenciaBoa,
           goals: goalsValue,
           observationsGoals: observationsGoals,
+          user_email: session?.user?.email || "strikemanager@gmail.com"
         }),
       });
       const data = await response.json();

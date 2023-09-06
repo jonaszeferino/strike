@@ -385,6 +385,7 @@ export default function StrikeManager() {
                         <Th>Balls</Th>
                         <Th>Observação</Th>
                         <Th>Data</Th>
+                        <Th>Altruista</Th>
                       </Tr>
                     </Thead>
                     <Tbody>
@@ -400,6 +401,11 @@ export default function StrikeManager() {
                                   "dd/MM/yyyy HH:mm:ss"
                                 )
                               : ""}
+                          </Td>
+                          <Td>
+                            {item.user_email
+                              ? item.user_email
+                              : "Poder Moderador"}
                           </Td>
                         </Tr>
                       ))}
@@ -489,6 +495,7 @@ export default function StrikeManager() {
                         <Th>Strike Points</Th>
                         <Th>Observação</Th>
                         <Th>Data</Th>
+                        <Th>Delegado</Th>
                       </Tr>
                     </Thead>
                     <Tbody>
@@ -504,6 +511,12 @@ export default function StrikeManager() {
                                   "dd/MM/yyyy HH:mm:ss"
                                 )
                               : ""}
+                          </Td>
+
+                          <Td>
+                            {item.user_email
+                              ? item.user_email
+                              : "Poder Moderador"}
                           </Td>
                         </Tr>
                       ))}
