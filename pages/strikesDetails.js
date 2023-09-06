@@ -436,35 +436,6 @@ export default function StrikeManager() {
                   </Table>
                 </Stack>
 
-                <FormControl>
-                  <FormLabel>Elemento</FormLabel>
-                  <Text>
-                    Selecione o Bom Cidadão Para Verificar Seus Beneficios Pra
-                    Sociedade
-                  </Text>
-                  <Select
-                    name="nome"
-                    placeholder="Selecione o Meliante"
-                    disabled={isNew}
-                    onChange={handleNomeChange}
-                    value={nome}
-                  >
-                    {nomes.map((item, index) => (
-                      <option key={index} value={item.value}>
-                        {item.label}
-                      </option>
-                    ))}
-                  </Select>
-                  <Button
-                    type="submit"
-                    colorScheme="teal"
-                    onClick={apiGoalsDetails}
-                    mt={2}
-                  >
-                    Verificar
-                  </Button>
-                </FormControl>
-
                 <Stack
                   direction={["column", "row"]}
                   spacing={4}
@@ -506,6 +477,38 @@ export default function StrikeManager() {
                     </Tbody>
                   </Table>
                 </Stack>
+
+
+                <FormControl>
+                  <FormLabel>Elemento</FormLabel>
+                  <Text>
+                    Selecione o Bom Cidadão Para Verificar Seus Beneficios Pra
+                    Sociedade
+                  </Text>
+                  <Select
+                    name="nome"
+                    placeholder="Selecione o Meliante"
+                    disabled={isNew}
+                    onChange={handleNomeChange}
+                    value={nome}
+                  >
+                    {nomes.map((item, index) => (
+                      <option key={index} value={item.value}>
+                        {item.label}
+                      </option>
+                    ))}
+                  </Select>
+                  <Button
+                    type="submit"
+                    colorScheme="teal"
+                    onClick={apiGoalsDetails}
+                    mt={2}
+                  >
+                    Verificar
+                  </Button>
+                </FormControl>
+
+            
               </Stack>
             </Center>
           </>
