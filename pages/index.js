@@ -179,7 +179,7 @@ export default function StrikeManager() {
         body: JSON.stringify({
           name: nome,
           incidents: ocorrencia,
-          strikePoints: strikeValue,
+          strikePoints: strikeValue ? strikeValue : 1 ,
           observations: observationsStrike,
           user_email: session?.user?.email || "strikemanager@gmail.com"
         }),
@@ -205,7 +205,7 @@ export default function StrikeManager() {
         body: JSON.stringify({
           name: nome,
           incidents: ocorrenciaBoa,
-          goals: goalsValue,
+          goals: goalsValue ? goalsValue : 1 ,
           observationsGoals: observationsGoals,
           user_email: session?.user?.email || "strikemanager@gmail.com"
         }),
