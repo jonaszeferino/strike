@@ -15,6 +15,7 @@
     "@chakra-ui/system": "^2.5.7",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
+    "@supabase/supabase-js": "^2.33.1",
     "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "date-fns": "^2.30.0",
@@ -29,7 +30,8 @@
     "next-link": "^2.0.0",
     "nprogress": "^0.2.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-icons": "^4.10.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",

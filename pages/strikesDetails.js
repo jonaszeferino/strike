@@ -22,9 +22,10 @@ import {
   SimpleGrid,
   Thead,
   Container,
-  Spinner
+  Spinner,
 } from "@chakra-ui/react";
 import { format, differenceInDays } from "date-fns";
+import { supabase } from "../utils/supabaseClient";
 
 export default function StrikeManager() {
   const [isClient, setIsClient] = useState(false);
@@ -42,8 +43,10 @@ export default function StrikeManager() {
 
   const [bad, setBad] = useState(true);
   const [good, setGood] = useState(false);
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
+  const [session, setSession] = useState(null);
+  const [isLoading, setIsLoading] = useState(null);
 
   useEffect(() => {
     setIsClient(true);
@@ -55,7 +58,7 @@ export default function StrikeManager() {
   }, [isClient]);
 
   const apiStrikes = async () => {
-    setLoading(true)
+    setLoading(true);
     console.log("apiStrikes called");
     try {
       const response = await fetch("/api/v1/getStrikeValues", {
@@ -67,7 +70,6 @@ export default function StrikeManager() {
       const data = await response.json();
       setStrikeSaveValues(data);
       setLoading(false);
-
 
       return data;
     } catch (error) {
@@ -98,7 +100,7 @@ export default function StrikeManager() {
   };
 
   const apiGoals = async () => {
-    setLoading(true)
+    setLoading(true);
 
     console.log("apiStrikes called");
     try {
@@ -111,7 +113,6 @@ export default function StrikeManager() {
       const data = await response.json();
       setGoalsSaveValues(data);
       setLoading(false);
-
 
       return data;
     } catch (error) {
@@ -227,34 +228,79 @@ export default function StrikeManager() {
     setGood(false);
   };
 
+  useEffect(() => {
+    let mounted = true;
+    async function getInitialSession() {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (mounted) {
+        if (session) {
+          setSession(session);
+        }
+        setIsLoading(false);
+      }
+    }
+    getInitialSession();
+    const { subscription } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+      }
+    );
+    return () => {
+      mounted = false;
+      subscription?.unsubscribe();
+    };
+  }, []);
+
   return (
     <ChakraProvider>
+      <Center>
+        <ChakraProvider>
+          {session ? (
+            <p>
+              Usuário: {session.user.email} <br />
+              <Center>
+                <Button
+                  onClick={() => supabase.auth.signOut()}
+                  colorScheme="red"
+                  size="sm"
+                >
+                  Sair
+                </Button>
+              </Center>
+            </p>
+          ) : null}
+          {/* Resto do seu código */}
+        </ChakraProvider>
+      </Center>
       <Container maxW="100%" p={4}>
-
-      <div>
-    <Center>
-    {loading && (
-      <Box>
-        <Center>
-        <Spinner />
-        <p> Carregando...</p>
-        </Center>
-      </Box>
-    )}
-    
-    </Center>
-  </div>
+        <div>
+          <Center>
+            {loading && (
+              <Box>
+                <Center>
+                  <Spinner />
+                  <p> Carregando...</p>
+                </Center>
+              </Box>
+            )}
+          </Center>
+        </div>
         <Center>
           <Stack direction="row" spacing={4} align="center">
-            <Button onClick={handleClickGood}
+            <Button
+              onClick={handleClickGood}
               colorScheme={good ? "purple" : "gray"}
-              
-
-            >Bem feitorias</Button>
-            <Button onClick={handleClickBad}
-                          colorScheme={bad ? "purple" : "gray"} 
-
-            >Marginalidade</Button>
+            >
+              Bem feitorias
+            </Button>
+            <Button
+              onClick={handleClickBad}
+              colorScheme={bad ? "purple" : "gray"}
+            >
+              Marginalidade
+            </Button>
           </Stack>
         </Center>
         {good ? (
