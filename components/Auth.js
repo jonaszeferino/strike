@@ -91,8 +91,7 @@ export default function Auth() {
           position="relative"
         >
           <Heading as="h1" size="xl" textAlign="center" mb={4}>
-            Login
-          </Heading>
+         </Heading>
           <FormControl>
             <FormLabel>Email</FormLabel>
             <Input
@@ -127,7 +126,6 @@ export default function Auth() {
             </Button>
           </Center>
           <br />
-
           {alertMessage && (
             <Alert status="info">
               <AlertIcon />

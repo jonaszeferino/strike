@@ -186,6 +186,11 @@ export default function StrikeManager() {
       label: "Vitor",
       imagem: "/imagens/vitor.jpg",
     },
+    {
+      value: "Eduardo",
+      label: "Eduardo",
+      imagem: "/imagens/eduardo.jpg",
+    },
   ];
 
   const categorias = [

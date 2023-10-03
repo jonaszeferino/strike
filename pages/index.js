@@ -26,6 +26,9 @@ import {
 } from "@chakra-ui/react";
 import { supabase } from "../utils/supabaseClient";
 
+import ScreenshotCapture from '../components/ScreenshotCapture';
+
+
 export default function StrikeManager() {
   const [isClient, setIsClient] = useState(false);
   const [isSent, setIsSent] = useState(false);
@@ -144,6 +147,11 @@ export default function StrikeManager() {
       value: "Vitor",
       label: "Vitor",
       imagem: "/imagens/vitor.jpg",
+    },
+    {
+      value: "Eduardo",
+      label: "Eduardo",
+      imagem: "/imagens/eduardo.jpg",
     },
   ];
 
@@ -322,6 +330,11 @@ export default function StrikeManager() {
     };
   }, []);
 
+
+  // screenShopt
+
+  
+
   return (
     <ChakraProvider>
       <>
@@ -345,6 +358,7 @@ export default function StrikeManager() {
           </ChakraProvider>
         </Center>
       </>
+      
 
       <br />
       <Center>
